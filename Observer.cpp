@@ -5,49 +5,51 @@
 using namespace std;
 
 /*
-	¹Û²ìÕßÄ£Ê½£ºµ±Ò»¸ö¶ÔÏó×´Ì¬·¢Éú¸Ä±äÊ±£¬ËùÓĞÒÀÀµÓÚËüµÄ¶ÔÏó¶¼»áµÃµ½Í¨Öª²¢×Ô¶¯¸üĞÂ
+	è§‚å¯Ÿè€…æ¨¡å¼ï¼šå½“ä¸€ä¸ªå¯¹è±¡çŠ¶æ€å‘ç”Ÿæ”¹å˜æ—¶ï¼Œæ‰€æœ‰ä¾èµ–äºå®ƒçš„å¯¹è±¡éƒ½ä¼šå¾—åˆ°é€šçŸ¥å¹¶è‡ªåŠ¨æ›´æ–°
 */
 
-//³éÏó¹Û²ìÕßÀà
+//æŠ½è±¡è§‚å¯Ÿè€…ç±»
 class Observer {
 public:
 	virtual void Update(const string& message) = 0;
 };
 
-//¾ßÌå¹Û²ìÕßÀà
+//å…·ä½“è§‚å¯Ÿè€…ç±»
 class ConcreteObserver :public Observer {
 private:
 	string name;
 public:
 	ConcreteObserver(const string& n) :name(n) {}
 	void Update(const string& message)override {
-		cout << name << " ÊÕµ½ĞÅÏ¢£º" << message << endl;
+		cout << name << " æ”¶åˆ°ä¿¡æ¯ï¼š" << message << endl;
 	}
 };
 
-//³éÏóÖ÷ÌâÀà(·¢²¼)
+//æŠ½è±¡ä¸»é¢˜ç±»(å‘å¸ƒ)
 class Subject {
 private:
 	vector<Observer*>observers;
 
 public:
 
-	//×¢²á
+	//æ³¨å†Œ
 	void Attach(Observer* observer) {
 		observers.push_back(observer);
 	}
-	//×¢Ïú
+	//æ³¨é”€
 	void Detach(Observer* observer) {
+		//removeä¼šæŠŠ[begin,end]æ‰€æœ‰ç­‰äºobserverçš„å€¼ç§»åŠ¨åˆ°å°¾éƒ¨ï¼Œå¹¶è¿”å›ç¬¬ä¸€ä¸ªç›¸åŒå€¼çš„å¼€å§‹ä½ç½®
+		//eraseä¼šæŠŠè¿™æ®µåŒºåŸŸçš„å€¼ç§»é™¤æ‰
 		observers.erase(remove(observers.begin(), observers.end(), observer), observers.end());
 	}
-	//Í¨Öª
+	//é€šçŸ¥
 	void Notify(const string& message) {
 		for (Observer* observer : observers) {
 			observer->Update(message);
 		}
 	}
 };
-//¾ßÌåÖ÷ÌâÀà
+//å…·ä½“ä¸»é¢˜ç±»
 class ConcreteSubject :public Subject {
 public:
 	void SomeBusinessLogic(const string& message) {
